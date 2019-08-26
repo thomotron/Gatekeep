@@ -130,6 +130,7 @@ async def on_message(message):
                 await help()
             else:
                 await whitelist(message.channel, ' '.join(args[1:]))
+                print('{}{}: {}'.format(DISCORD_PREFIX, message.author, ' '.join(args)))
 
 
     # Delete the command

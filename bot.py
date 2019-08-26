@@ -22,8 +22,6 @@ if not config.sections():
     print('No existing config was found')
     print('Please fill out config.ini and restart the bot')
     config['Discord'] = {
-        'client_id': '',
-        'client_secret': '',
         'bot_token': '',
         'bot_owner': '',
         'bot_server': ''
@@ -34,20 +32,13 @@ if not config.sections():
 if 'Discord' not in config:
     print('Failed to read config: \'Discord\' section missing')
     exit(1)
-if 'client_id' not in config['Discord']:
-    print('Failed to read config: \'client_id\' missing from section \'Discord\'')
-    exit(1)
 if 'bot_token' not in config['Discord']:
     print('Failed to read config: \'bot_token\' missing from section \'Discord\'')
     exit(1)
-# if 'bot_owner' not in config['Discord']:
-#     print('Failed to read config: \'bot_owner\' missing from section \'Discord\'')
-#     exit(1)
 if 'bot_server' not in config['Discord']:
     print('Failed to read config: \'bot_server\' missing from section \'Discord\'')
     exit(1)
 
-discord_id = config['Discord']['client_id']
 discord_bot_token = config['Discord']['bot_token']
 discord_bot_server = config['Discord']['bot_server']
 try:
@@ -105,7 +96,7 @@ async def on_message(message):
     prefix = ''
     if message.content.startswith(COMMAND_PREFIX):
         prefix = COMMAND_PREFIX
-    elif message.content.startswith('<@' + str(discord_id) + '>'):
+    elif message.content.startswith('<@' + str(bot.user.id) + '>'):
         prefix = '@{}#{}'.format(bot.user.name, bot.user.discriminator)
     else:
         # We weren't addressed, we can stop here

@@ -30,7 +30,7 @@ if not config.sections():
         }
     config.write(open(config_path, 'w'))
     exit(1)
-    
+
 if 'Discord' not in config:
     print('Failed to read config: \'Discord\' section missing')
     exit(1)

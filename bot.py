@@ -60,7 +60,7 @@ args = parser.parse_args()
 
 ##### Define some functions ############################################################################################
 
-def whitelist(channel: discord.TextChannel, users: str):
+async def whitelist(channel: discord.TextChannel, users: str):
     for user in users.split():
         if not re.match(r'^[A-Za-z0-9_]{3,16}$', user):  # as per https://help.mojang.com/customer/en/portal/articles/928638-minecraft-usernames?b_id=5408
             await channel.send('\'{}\' is not a valid Minecraft username'.format(user))
@@ -131,7 +131,7 @@ async def on_message(message):
             if len(args) < 1:
                 await help()
             else:
-                await whitelist(' '.join(args[1:]))
+                await whitelist(message.channel, ' '.join(args[1:]))
 
 
     # Delete the command

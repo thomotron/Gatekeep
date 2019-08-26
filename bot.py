@@ -74,6 +74,8 @@ async def whitelist(channel: discord.TextChannel, users: str):
 
             run(args)
 
+            await channel.send('Whitelisted \'{}\''.format(user))
+
 ##### Set up the Discord bot ###########################################################################################
 
 bot = discord.Client()

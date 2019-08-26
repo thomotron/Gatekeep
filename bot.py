@@ -20,15 +20,17 @@ config.read(config_path)
 
 if not config.sections():
     print('No existing config was found')
-    print('Copy the following blank template into ' + config_path + ' and fill in the blanks:')
-    print('[Discord]\n' +
-          'client_id = \n' +
-          'client_secret = \n' +
-          'bot_token = \n' +
-          'bot_owner = \n' +
-          'bot_server = \n')
+    print('Please fill out config.ini and restart the bot')
+    config['Discord'] = {
+        'client_id': '',
+        'client_secret': '',
+        'bot_token': '',
+        'bot_owner': '',
+        'bot_server': ''
+        }
+    config.write(open(config_path, 'w'))
     exit(1)
-
+    
 if 'Discord' not in config:
     print('Failed to read config: \'Discord\' section missing')
     exit(1)

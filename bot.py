@@ -3,13 +3,14 @@ import re
 import discord
 from argparse import ArgumentParser
 from configparser import ConfigParser
-from subprocess import call
+from subprocess import run
 
 ##### Define some constants ############################################################################################
 
 DISCORD_PREFIX = '[Discord] '
 COMMAND_PREFIX = '#gatekeep'
-WHITELIST_COMMAND_TEMPLATE = 'tmux send-keys -t "0:0" Enter "whitelist add {}" Enter'
+WHITELIST_COMMAND_ARGS = ['tmux', 'send-keys', '-t', '0:0', 'Enter', 'whitelist add {}', 'Enter']
+WHITELIST_COMMAND_TEMPLATE_INDEX = 5  # ^1      ^2     ^3      ^4             ^5            ^6
 
 ##### Read in our ID and secret from config ############################################################################
 
@@ -64,7 +65,16 @@ def whitelist(channel: discord.TextChannel, users: str):
         if not re.match(r'^[A-Za-z0-9_]{3,16}$', user):  # as per https://help.mojang.com/customer/en/portal/articles/928638-minecraft-usernames?b_id=5408
             await channel.send('\'{}\' is not a valid Minecraft username'.format(user))
         else:
-            call(WHITELIST_COMMAND_TEMPLATE.format(user))
+            args = []
+            for arg in WHITELIST_COMMAND_ARGS:
+                print(arg)
+                if '{}' in arg:
+                    args.append(arg.format(user))
+                else:
+                    args.append(arg)
+
+            print(args[WHITELIST_COMMAND_TEMPLATE_INDEX])
+            run(args)
 
 ##### Set up the Discord bot ###########################################################################################
 

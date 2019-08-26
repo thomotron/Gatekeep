@@ -2,7 +2,7 @@
 import discord
 from argparse import ArgumentParser
 from configparser import ConfigParser
-from os.subprocess import call
+from subprocess import call
 
 ##### Define some constants ############################################################################################
 

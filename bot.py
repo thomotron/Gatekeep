@@ -67,13 +67,11 @@ async def whitelist(channel: discord.TextChannel, users: str):
         else:
             args = []
             for arg in WHITELIST_COMMAND_ARGS:
-                print(arg)
                 if '{}' in arg:
                     args.append(arg.format(user))
                 else:
                     args.append(arg)
 
-            print(args[WHITELIST_COMMAND_TEMPLATE_INDEX])
             run(args)
 
 ##### Set up the Discord bot ###########################################################################################

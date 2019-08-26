@@ -1,4 +1,5 @@
 #!/bin/python3
+import re
 import discord
 from argparse import ArgumentParser
 from configparser import ConfigParser
@@ -8,7 +9,7 @@ from subprocess import call
 
 DISCORD_PREFIX = '[Discord] '
 COMMAND_PREFIX = '#gatekeep'
-WHITELIST_COMMAND_TEMPLATE = 'tmux send-keys -t "0:0" Enter "whitelist add {}" Enter'  # Vulnerable to command injection
+WHITELIST_COMMAND_TEMPLATE = 'tmux send-keys -t "0:0" Enter "whitelist add {}" Enter'
 
 ##### Read in our ID and secret from config ############################################################################
 
@@ -58,9 +59,12 @@ args = parser.parse_args()
 
 ##### Define some functions ############################################################################################
 
-def whitelist(users: str):
+def whitelist(channel: discord.TextChannel, users: str):
     for user in users.split():
-        call(WHITELIST_COMMAND_TEMPLATE.format(user))
+        if not re.match(r'^[A-Za-z0-9_]{3,16}$', user):  # as per https://help.mojang.com/customer/en/portal/articles/928638-minecraft-usernames?b_id=5408
+            await channel.send('\'{}\' is not a valid Minecraft username'.format(user))
+        else:
+            call(WHITELIST_COMMAND_TEMPLATE.format(user))
 
 ##### Set up the Discord bot ###########################################################################################
 
